@@ -1,0 +1,9 @@
+SELECT eventos1.event_type, (eventos2.value - eventos1.value) AS value FROM
+eventos eventos1 JOIN eventos eventos2 ON eventos1.event_type = eventos2.event_type
+AND eventos1.time = (SELECT time 
+					 FROM eventos antigo 
+                     WHERE antigo.event_type = eventos1.event_type ORDER BY time ASC LIMIT 1)
+AND eventos2.time = (SELECT time 
+					 FROM eventos velho
+					WHERE velho.event_type=eventos2.event_type ORDER BY time ASC LIMIT 1 OFFSET 1)
+order by event_type ASC;
